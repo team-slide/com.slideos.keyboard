@@ -679,6 +679,10 @@ public class LeanbackKeyboardContainer {
     public Key getKey(int type, int index) {
         return type == KeyFocus.TYPE_MAIN ? this.mMainKeyboardView.getKey(index) : null;
     }
+    
+    public LeanbackKeyboardView getMainKeyboardView() {
+        return mMainKeyboardView;
+    }
 
     public void updateCyclicFocus(int dir, KeyFocus oldFocus, KeyFocus newFocus) {
         if (oldFocus.equals(newFocus) || LeanbackUtils.isSubmitButton(newFocus)) {

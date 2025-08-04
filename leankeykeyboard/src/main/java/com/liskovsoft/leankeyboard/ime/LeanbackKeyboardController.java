@@ -21,6 +21,7 @@ import com.liskovsoft.leankeyboard.ime.pano.util.TouchNavSpaceTracker;
 import com.liskovsoft.leankeykeyboard.R;
 
 import java.util.ArrayList;
+import android.content.Intent;
 
 public class LeanbackKeyboardController implements LeanbackKeyboardContainer.VoiceListener,
                                                    LeanbackKeyboardContainer.DismissListener,
@@ -172,6 +173,16 @@ public class LeanbackKeyboardController implements LeanbackKeyboardContainer.Voi
                     mInputListener.onEntry(InputListener.ENTRY_TYPE_SUGGESTION, 0, mContainer.getSuggestionText(focus.index));
                     return;
                 default:
+                    // For horizontal keyboard, get the current key from the keyboard view
+                    if (mContainer.getMainKeyboardView() != null) {
+                        Key currentKey = mContainer.getMainKeyboardView().getCurrentKey();
+                        if (currentKey != null) {
+                            handleCommitKeyboardKey(currentKey.codes[0], currentKey.label);
+                            return;
+                        }
+                    }
+                    
+                    // Fallback to original behavior
                     Key key = mContainer.getKey(focus.type, focus.index);
                     if (key != null) {
                         handleCommitKeyboardKey(key.codes[0], key.label);
@@ -361,6 +372,10 @@ public class LeanbackKeyboardController implements LeanbackKeyboardContainer.Voi
         boolean handled;
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             mContainer.cancelVoiceRecording();
+            // Dismiss keyboard when BACK is pressed
+            if (mContext != null) {
+                mContext.hideWindow();
+            }
             handled = false;
         } else if (mContainer.isVoiceVisible()) {
             if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -575,6 +590,31 @@ public class LeanbackKeyboardController implements LeanbackKeyboardContainer.Voi
     }
 
     private boolean onDirectionalMove(int dir) {
+        // For horizontal keyboard, handle scrolling and special actions
+        if (mContainer != null && mContainer.getMainKeyboardView() != null) {
+            LeanbackKeyboardView keyboardView = mContainer.getMainKeyboardView();
+            
+            switch (dir) {
+                case LeanbackKeyboardContainer.DIRECTION_LEFT:
+                    // DPAD_LEFT is backspace
+                    handleCommitKeyboardKey(LeanbackKeyboardView.KEYCODE_DELETE, null);
+                    return true;
+                case LeanbackKeyboardContainer.DIRECTION_RIGHT:
+                    // DPAD_RIGHT is space
+                    handleCommitKeyboardKey(LeanbackKeyboardView.ASCII_SPACE, " ");
+                    return true;
+                case LeanbackKeyboardContainer.DIRECTION_UP:
+                    // DPAD_UP should scroll left (like iPod Classic)
+                    keyboardView.scrollLeft();
+                    return true;
+                case LeanbackKeyboardContainer.DIRECTION_DOWN:
+                    // DPAD_DOWN should scroll right (like iPod Classic)
+                    keyboardView.scrollRight();
+                    return true;
+            }
+        }
+        
+        // Fallback to original behavior if needed
         if (mContainer.getNextFocusInDirection(dir, mCurrentFocus, mTempFocus)) {
             mContainer.updateCyclicFocus(dir, mCurrentFocus, mTempFocus);
             mContainer.setFocus(mTempFocus);
@@ -763,11 +803,26 @@ public class LeanbackKeyboardController implements LeanbackKeyboardContainer.Voi
     }
 
     public boolean showInputView() {
-        return mShowInput;
+        boolean result = mShowInput;
+        if (result) {
+            // Notify background service that keyboard is now active
+            notifyKeyboardStateChanged(true);
+        }
+        return result;
     }
 
     private void onHideIme() {
+        // Notify background service that keyboard is now inactive
+        notifyKeyboardStateChanged(false);
         mContext.requestHideSelf(InputMethodService.BACK_DISPOSITION_DEFAULT);
+    }
+
+    private void notifyKeyboardStateChanged(boolean isActive) {
+        if (mContext != null) {
+            Intent intent = new Intent("com.liskovsoft.leankeyboard.KEYBOARD_STATE_CHANGED");
+            intent.putExtra("isActive", isActive);
+            mContext.sendBroadcast(intent);
+        }
     }
 
     public void onStartInputView() {

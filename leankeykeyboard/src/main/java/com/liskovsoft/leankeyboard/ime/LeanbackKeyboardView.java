@@ -76,6 +76,11 @@ public class LeanbackKeyboardView extends FrameLayout {
     protected int mKeyTextSize;
     protected int mModeChangeTextSize;
     private Drawable mCustomCapsLockDrawable;
+    
+    // Horizontal scrolling keyboard properties
+    private int mVisibleKeys = 8; // Number of keys visible at once
+    private int mScrollOffset = 0; // Current scroll position
+    private int mFixedFocusIndex = 3; // Fixed position for focus (aligned with visual highlight - e highlighted should enter e)
 
     private static class KeyConverter {
         private static final int LOWER_CASE = 0;
@@ -130,8 +135,8 @@ public class LeanbackKeyboardView extends FrameLayout {
         super(context, attrs);
         Resources res = context.getResources();
         TypedArray styledAttrs = context.getTheme().obtainStyledAttributes(attrs, R.styleable.LeanbackKeyboardView, 0, 0);
-        mRowCount = styledAttrs.getInteger(R.styleable.LeanbackKeyboardView_rowCount, -1);
-        mColCount = styledAttrs.getInteger(R.styleable.LeanbackKeyboardView_columnCount, -1);
+        mRowCount = 1; // Force single row for horizontal keyboard
+        mColCount = styledAttrs.getInteger(R.styleable.LeanbackKeyboardView_columnCount, 8); // Default to 8 visible keys
         mKeyTextSize = (int) res.getDimension(R.dimen.key_font_size);
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -141,7 +146,7 @@ public class LeanbackKeyboardView extends FrameLayout {
         mPadding = new Rect(0, 0, 0, 0);
         mModeChangeTextSize = (int) res.getDimension(R.dimen.function_key_mode_change_font_size);
         mKeyTextColor = ContextCompat.getColor(getContext(), R.color.key_text_default);
-        mFocusIndex = -1;
+        mFocusIndex = mFixedFocusIndex; // Start with focus in the middle
         mShiftState = 0;
         mFocusedScale = res.getFraction(R.fraction.focused_scale, 1, 1);
         mClickedScale = res.getFraction(R.fraction.clicked_scale, 1, 1);
@@ -150,6 +155,10 @@ public class LeanbackKeyboardView extends FrameLayout {
         mUnfocusStartDelay = res.getInteger(R.integer.unfocused_anim_delay);
         mInactiveMiniKbAlpha = res.getInteger(R.integer.inactive_mini_kb_alpha);
         mConverter = new KeyConverter();
+        
+        // Initialize horizontal keyboard properties
+        mVisibleKeys = mColCount;
+        mScrollOffset = 0;
     }
 
     private void adjustCase(KeyHolder keyHolder) {
@@ -256,8 +265,7 @@ public class LeanbackKeyboardView extends FrameLayout {
         image.setContentDescription(label);
         // Adds key views to root window
         addView(image, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-        // Set position manually for each key
-        image.setX((float) (key.x + kbdPaddingLeft));
+        // Position will be set by updateKeyPositions() for horizontal scrolling
         image.setY((float) (key.y + kbdPaddingTop));
         int opacity;
         if (mMiniKeyboardOnScreen && !keyHolder.isInMiniKb) {
@@ -294,7 +302,10 @@ public class LeanbackKeyboardView extends FrameLayout {
 
             mKeyImageViews[i] = createKeyImageView(i);
         }
-
+        
+        // Initialize positions for horizontal scrolling
+        updateKeyPositions();
+        updateFocus();
     }
 
     private void removeMessages() {
@@ -499,13 +510,15 @@ public class LeanbackKeyboardView extends FrameLayout {
         if (mKeyboard == null) {
             setMeasuredDimension(getPaddingLeft() + getPaddingRight(), getPaddingTop() + getPaddingBottom());
         } else {
-            int heightFull = mKeyboard.getMinWidth() + getPaddingLeft() + getPaddingRight();
-            heightMeasureSpec = heightFull;
-            if (MeasureSpec.getSize(widthMeasureSpec) < heightFull + 10) {
-                heightMeasureSpec = MeasureSpec.getSize(widthMeasureSpec);
-            }
-
-            setMeasuredDimension(heightMeasureSpec, mKeyboard.getHeight() + getPaddingTop() + getPaddingBottom());
+            // For horizontal keyboard, calculate width based on visible keys
+            int keyWidth = (int) getResources().getDimension(R.dimen.key_width);
+            int keySpacing = (int) getResources().getDimension(R.dimen.keyboard_horizontal_gap);
+            int totalWidth = (mVisibleKeys * keyWidth) + ((mVisibleKeys - 1) * keySpacing) + getPaddingLeft() + getPaddingRight();
+            
+            // Height is fixed for single row
+            int totalHeight = (int) getResources().getDimension(R.dimen.key_height) + getPaddingTop() + getPaddingBottom();
+            
+            setMeasuredDimension(totalWidth, totalHeight);
         }
     }
 
@@ -617,6 +630,78 @@ public class LeanbackKeyboardView extends FrameLayout {
             mShiftState = state;
             invalidateAllKeys();
         }
+    }
+    
+    // Horizontal scrolling methods
+    public void scrollLeft() {
+        if (mKeys != null) {
+            if (mScrollOffset > 0) {
+                mScrollOffset--;
+            } else {
+                // Loop to the end - go to the last character, not past it
+                mScrollOffset = Math.max(0, mKeys.length - mVisibleKeys);
+            }
+            updateKeyPositions();
+            updateFocus();
+        }
+    }
+    
+    public void scrollRight() {
+        if (mKeys != null) {
+            if (mScrollOffset < mKeys.length - mVisibleKeys) {
+                mScrollOffset++;
+            } else {
+                // Loop to the beginning
+                mScrollOffset = 0;
+            }
+            updateKeyPositions();
+            updateFocus();
+        }
+    }
+    
+    private void updateKeyPositions() {
+        if (mKeyImageViews == null || mKeys == null) return;
+        
+        int keyWidth = (int) getResources().getDimension(R.dimen.key_width);
+        int keySpacing = (int) getResources().getDimension(R.dimen.keyboard_horizontal_gap);
+        int kbdPaddingLeft = getPaddingLeft();
+        int kbdPaddingTop = getPaddingTop();
+        
+        // Update positions for all keys based on scroll offset
+        for (int i = 0; i < mKeyImageViews.length; i++) {
+            if (mKeyImageViews[i] != null) {
+                // Calculate new X position based on scroll offset
+                int newX = kbdPaddingLeft + (i - mScrollOffset) * (keyWidth + keySpacing);
+                
+                // Only show keys that are in the visible range
+                if (i >= mScrollOffset && i < mScrollOffset + mVisibleKeys) {
+                    mKeyImageViews[i].setX(newX);
+                    mKeyImageViews[i].setVisibility(View.VISIBLE);
+                } else {
+                    mKeyImageViews[i].setVisibility(View.INVISIBLE);
+                }
+            }
+        }
+    }
+    
+    private void updateFocus() {
+        // Set focus to the fixed position
+        int currentFocusIndex = getCurrentKeyIndex();
+        if (currentFocusIndex >= 0 && currentFocusIndex < mKeys.length) {
+            setFocus(mFixedFocusIndex, false, true);
+        }
+    }
+    
+    public int getCurrentKeyIndex() {
+        return mScrollOffset + mFixedFocusIndex;
+    }
+    
+    public Key getCurrentKey() {
+        int currentIndex = getCurrentKeyIndex();
+        if (currentIndex >= 0 && currentIndex < mKeys.length) {
+            return mKeys[currentIndex].key;
+        }
+        return null;
     }
 
     private static class KeyHolder {

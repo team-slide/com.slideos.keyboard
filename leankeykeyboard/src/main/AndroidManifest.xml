@@ -25,6 +25,9 @@
     <!-- Google Play Store fix -->
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!-- Background keyboard service permissions -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:banner="@mipmap/ic_banner_main"
@@ -99,6 +102,19 @@
             <meta-data
                 android:name="android.view.im"
                 android:resource="@xml/method"/>
+        </service>
+
+        <service
+            android:name="com.liskovsoft.leankeyboard.ime.BackgroundKeyboardService"
+            android:label="Background Keyboard Service"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.liskovsoft.leankeyboard.START_BACKGROUND_SERVICE"/>
+                <action android:name="com.liskovsoft.leankeyboard.SHOW_KEYBOARD"/>
+                <action android:name="com.liskovsoft.leankeyboard.HIDE_KEYBOARD"/>
+                <action android:name="com.liskovsoft.leankeyboard.KEYBOARD_STATE_CHANGED"/>
+            </intent-filter>
         </service>
 
         <receiver

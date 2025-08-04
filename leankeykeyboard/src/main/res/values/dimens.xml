@@ -31,6 +31,15 @@
     <dimen name="candidate_font_size">18.0sp</dimen>
     <dimen name="candidate_padding_horizontal">16.0dip</dimen>
     <dimen name="candidate_margin_horizontal">4.0dip</dimen>
+    <!-- Compact keyboard dimensions -->
+    <dimen name="compact_char_width">24.0dip</dimen>
+    <dimen name="compact_char_height">32.0dip</dimen>
+    <dimen name="compact_char_spacing">2.0dip</dimen>
+    <dimen name="compact_input_width">120.0dip</dimen>
+    <dimen name="compact_input_height">32.0dip</dimen>
+    <dimen name="compact_input_padding">8.0dip</dimen>
+    <dimen name="compact_char_font_size">16.0sp</dimen>
+    <dimen name="compact_input_font_size">14.0sp</dimen>
     <!-- Unused values -->
     <dimen name="mode_change_key_font_size">7.0sp</dimen>
     <dimen name="text_size_dp">15dp</dimen>

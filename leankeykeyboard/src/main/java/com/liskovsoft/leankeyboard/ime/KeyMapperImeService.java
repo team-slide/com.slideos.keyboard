@@ -94,7 +94,9 @@ public class KeyMapperImeService extends InputMethodService {
         if (VERSION.SDK_INT < 33) {
             registerReceiver(mBroadcastReceiver, intentFilter);
         } else {
-            registerReceiver(mBroadcastReceiver, intentFilter, RECEIVER_EXPORTED);
+            // For API 33+, use the new flag, but since we're targeting older versions,
+            // we'll use a different approach
+            registerReceiver(mBroadcastReceiver, intentFilter, 0);
         }
     }
 

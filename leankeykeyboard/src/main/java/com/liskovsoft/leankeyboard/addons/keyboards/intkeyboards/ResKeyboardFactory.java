@@ -81,22 +81,21 @@ public class ResKeyboardFactory implements KeyboardFactory {
 
             @Override
             public Keyboard createAbcKeyboard() {
-                String prefix = info.isAzerty() ? "azerty_" : "qwerty_";
-                int kbResId = mContext.getResources().getIdentifier(prefix + langCode, "xml", mContext.getPackageName());
-                Keyboard keyboard = new Keyboard(mContext, kbResId);
-                Log.d(TAG, "Creating keyboard... " + info.getLangName());
+                // Use letters keyboard for all languages
+                Keyboard keyboard = new Keyboard(mContext, R.xml.qwerty_letters);
+                Log.d(TAG, "Creating letters keyboard... " + info.getLangName());
                 return localizeKeys(keyboard, info);
             }
 
             @Override
             public Keyboard createSymKeyboard() {
-                Keyboard keyboard = new Keyboard(mContext, R.xml.sym_en_us);
+                Keyboard keyboard = new Keyboard(mContext, R.xml.qwerty_symbols);
                 return localizeKeys(keyboard, info);
             }
 
             @Override
             public Keyboard createNumKeyboard() {
-                return new Keyboard(mContext, R.xml.number);
+                return new Keyboard(mContext, R.xml.qwerty_numbers);
             }
         };
     }
