@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/black"
+    android:padding="0dp">
+
+    <!-- Unified Status Bar -->
+    <include
+        android:id="@+id/unified_status_bar"
+        layout="@layout/unified_status_bar" />
+
+    <!-- Keyboard Settings List -->
+    <ListView
+        android:id="@+id/settings_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/black"
+        android:divider="@color/subtle_divider"
+        android:dividerHeight="1dp"
+        android:padding="0dp"
+        android:scrollbars="vertical"
+        android:listSelector="@color/ipod_classic_blue"
+        android:choiceMode="singleChoice"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+</LinearLayout> 

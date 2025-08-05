@@ -9,7 +9,7 @@ import androidx.leanback.widget.GuidanceStylist.Guidance;
 import com.liskovsoft.leankeyboard.addons.keyboards.intkeyboards.KeyboardInfoAdapter;
 import com.liskovsoft.leankeyboard.addons.keyboards.intkeyboards.CheckedSource;
 import com.liskovsoft.leankeyboard.addons.keyboards.intkeyboards.CheckedSource.CheckedItem;
-import com.liskovsoft.leankeykeyboard.R;
+import com.slideos.system.R;
 
 public class KbLayoutFragment extends BaseSettingsFragment {
     @Override

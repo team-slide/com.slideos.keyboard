@@ -21,7 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import androidx.core.content.ContextCompat;
 import com.liskovsoft.leankeyboard.utils.LeanKeyPreferences;
-import com.liskovsoft.leankeykeyboard.R;
+import com.slideos.system.R;
 
 import java.util.Iterator;
 import java.util.List;
@@ -78,9 +78,9 @@ public class LeanbackKeyboardView extends FrameLayout {
     private Drawable mCustomCapsLockDrawable;
     
     // Horizontal scrolling keyboard properties
-    private int mVisibleKeys = 8; // Number of keys visible at once
+    private int mVisibleKeys = 7; // Number of keys visible at once (odd number for center highlighting)
     private int mScrollOffset = 0; // Current scroll position
-    private int mFixedFocusIndex = 3; // Fixed position for focus (aligned with visual highlight - e highlighted should enter e)
+    private int mFixedFocusIndex = 3; // Fixed position for focus (center of 7 keys = index 3)
 
     private static class KeyConverter {
         private static final int LOWER_CASE = 0;
@@ -635,12 +635,25 @@ public class LeanbackKeyboardView extends FrameLayout {
     // Horizontal scrolling methods
     public void scrollLeft() {
         if (mKeys != null) {
-            if (mScrollOffset > 0) {
-                mScrollOffset--;
+            // Get current key index
+            int currentKeyIndex = getCurrentKeyIndex();
+            
+            // Move to previous key in sequence
+            if (currentKeyIndex > 0) {
+                currentKeyIndex--;
             } else {
-                // Loop to the end - go to the last character, not past it
+                // Loop to the end
+                currentKeyIndex = mKeys.length - 1;
+            }
+            
+            // Calculate new scroll offset to keep the target key in focus position
+            mScrollOffset = Math.max(0, currentKeyIndex - mFixedFocusIndex);
+            
+            // Ensure we don't scroll past the end
+            if (mScrollOffset > mKeys.length - mVisibleKeys) {
                 mScrollOffset = Math.max(0, mKeys.length - mVisibleKeys);
             }
+            
             updateKeyPositions();
             updateFocus();
         }
@@ -648,12 +661,25 @@ public class LeanbackKeyboardView extends FrameLayout {
     
     public void scrollRight() {
         if (mKeys != null) {
-            if (mScrollOffset < mKeys.length - mVisibleKeys) {
-                mScrollOffset++;
+            // Get current key index
+            int currentKeyIndex = getCurrentKeyIndex();
+            
+            // Move to next key in sequence
+            if (currentKeyIndex < mKeys.length - 1) {
+                currentKeyIndex++;
             } else {
                 // Loop to the beginning
-                mScrollOffset = 0;
+                currentKeyIndex = 0;
             }
+            
+            // Calculate new scroll offset to keep the target key in focus position
+            mScrollOffset = Math.max(0, currentKeyIndex - mFixedFocusIndex);
+            
+            // Ensure we don't scroll past the end
+            if (mScrollOffset > mKeys.length - mVisibleKeys) {
+                mScrollOffset = Math.max(0, mKeys.length - mVisibleKeys);
+            }
+            
             updateKeyPositions();
             updateFocus();
         }
@@ -685,10 +711,14 @@ public class LeanbackKeyboardView extends FrameLayout {
     }
     
     private void updateFocus() {
-        // Set focus to the fixed position
+        // Set focus to the current key index, not the fixed position
         int currentFocusIndex = getCurrentKeyIndex();
         if (currentFocusIndex >= 0 && currentFocusIndex < mKeys.length) {
-            setFocus(mFixedFocusIndex, false, true);
+            // Calculate the visual position of the current key
+            int visualIndex = currentFocusIndex - mScrollOffset;
+            if (visualIndex >= 0 && visualIndex < mVisibleKeys) {
+                setFocus(visualIndex, false, true);
+            }
         }
     }
     
@@ -702,6 +732,10 @@ public class LeanbackKeyboardView extends FrameLayout {
             return mKeys[currentIndex].key;
         }
         return null;
+    }
+    
+    public void updateFocusAfterScroll() {
+        updateFocus();
     }
 
     private static class KeyHolder {

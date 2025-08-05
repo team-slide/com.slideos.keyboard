@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/black">
+
+    <!-- Unified Status Bar -->
+    <include
+        android:id="@+id/unified_status_bar"
+        layout="@layout/unified_status_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:gravity="center_horizontal">
+
+        <!-- Logo -->
+        <ImageView
+            android:id="@+id/credits_logo"
+            android:layout_width="250dp"
+            android:layout_height="125dp"
+            android:src="@drawable/about_logo"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp" />
+
+        <!-- Version -->
+        <TextView
+            android:id="@+id/credits_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Developer Beta 0.8.1"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/credits_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="A customised Android experience tailored for the Innioasis Y1 by Team Slide."
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Developers -->
+        <TextView
+            android:id="@+id/credits_developers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Development Team:"
+            android:textSize="22sp"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Attribution -->
+        <TextView
+            android:id="@+id/credits_attribution"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Based on LeanKeyboard by LiskovSoft"
+            android:textSize="18sp"
+            android:textColor="@android:color/darker_gray"
+            android:gravity="center"
+            android:layout_marginBottom="20dp" />
+
+            </LinearLayout>
+    </ScrollView>
+
+</LinearLayout> 

@@ -14,7 +14,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.core.content.ContextCompat;
-import com.liskovsoft.leankeykeyboard.R;
+import com.slideos.system.R;
 
 public class BitmapSoundLevelView extends View {
     private static final boolean DEBUG = false;

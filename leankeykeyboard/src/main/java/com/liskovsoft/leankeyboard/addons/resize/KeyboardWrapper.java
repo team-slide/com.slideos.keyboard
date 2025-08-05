@@ -4,7 +4,7 @@ import android.content.Context;
 import android.inputmethodservice.Keyboard;
 import androidx.annotation.Nullable;
 import com.liskovsoft.leankeyboard.ime.LeanbackKeyboardContainer;
-import com.liskovsoft.leankeykeyboard.R;
+import com.slideos.system.R;
 
 import java.util.List;
 

@@ -40,6 +40,6 @@
         <Key android:codes="-2" android:keyLabel="123" android:keyIcon="@drawable/ic_ime_symbols" />
         <Key android:codes="-1" android:keyLabel="ABC" android:keyIcon="@drawable/ic_ime_shift_off" />
         <Key android:codes="-5" android:keyLabel="@string/keyboardview_keycode_delete" android:keyIcon="@drawable/ic_ime_delete" />
-        <Key android:codes="32" android:keyLabel=" " android:keyWidth="@dimen/space_key_width" />
+        <Key android:codes="32" android:keyLabel="␣" android:keyWidth="@dimen/space_key_width" />
     </Row>
 </Keyboard> 

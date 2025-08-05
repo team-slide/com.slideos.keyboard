@@ -9,7 +9,7 @@ import androidx.leanback.widget.GuidanceStylist.Guidance;
 import com.liskovsoft.leankeyboard.activity.settings.KbSettingsActivity2;
 import com.liskovsoft.leankeyboard.helpers.Helpers;
 import com.liskovsoft.leankeyboard.utils.LeanKeyPreferences;
-import com.liskovsoft.leankeykeyboard.R;
+import com.slideos.system.R;
 
 public class MiscFragment extends BaseSettingsFragment {
     private LeanKeyPreferences mPrefs;

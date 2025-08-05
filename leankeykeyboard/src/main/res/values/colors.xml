@@ -9,4 +9,16 @@
     <color name="candidate_background">#ff263238</color>
     <color name="candidate_font_color">#ff30c6b4</color>
     <color name="enter_key_font_color">#ff30c6b4</color>
+    <color name="subtle_divider">#333333</color>
+    
+    <!-- Accent Colors -->
+    <color name="accent_blue">#2196F3</color>
+    <color name="accent_green">#4CAF50</color>
+    <color name="accent_orange">#FF9800</color>
+    <color name="accent_purple">#9C27B0</color>
+    <color name="accent_red">#F44336</color>
+    <color name="accent_teal">#009688</color>
+    <color name="accent_yellow">#FFEB3B</color>
+    <color name="accent_pink">#E91E63</color>
+    <color name="accent_custom">#FFFFFF</color>
 </resources>

@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.EditorInfo;
-import com.liskovsoft.leankeykeyboard.R;
+import com.slideos.system.R;
 
 import java.util.ArrayList;
 

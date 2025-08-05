@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat;
 import androidx.leanback.app.GuidedStepSupportFragment;
 import androidx.leanback.widget.GuidanceStylist.Guidance;
 import com.liskovsoft.leankeyboard.activity.settings.KbActivationActivity;
-import com.liskovsoft.leankeykeyboard.R;
+import com.slideos.system.R;
 
 public class KbSettingsFragment extends BaseSettingsFragment {
     @Override

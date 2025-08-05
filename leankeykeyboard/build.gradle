@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     // Latest gradle fix: https://stackoverflow.com/questions/76300671/android-getting-error-namespace-not-specified
-    namespace 'com.liskovsoft.leankeykeyboard'
+    namespace 'com.slideos.system'
 
     // Latest gradle fix: https://stackoverflow.com/questions/22604627/gradle-buildconfigfield-buildconfig-cannot-resolve-symbol
     buildFeatures {
@@ -19,11 +19,11 @@ android {
     buildToolsVersion project.properties.buildToolsVersion
 
     defaultConfig {
-        applicationId "org.liskovsoft.leankeykeyboard.pro"
-        minSdkVersion project.properties.minSdkVersion
-        targetSdkVersion project.properties.targetSdkVersion
-        versionCode 202
-        versionName "6.1.32"
+        applicationId "com.slideos.system"
+        minSdk 17
+        targetSdk 17
+        versionCode 81
+        versionName "0.8.1"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -39,16 +39,15 @@ android {
     // naming example: SmartYouTubeTV_Xwalk_v6.8.12_r.apk
     // https://stackoverflow.com/questions/18332474/how-to-set-versionname-in-apk-filename-using-gradle
     applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            def project = "LeanKeyboard"
-            // Latest gradle fix: https://stackoverflow.com/questions/62075122/no-such-property-variantconfiguration-for-class
-            def buildType = variant.buildType.name.take(1)
-            def version = variant.versionName
-            def flavor = variant.productFlavors[-1].name
-
-            def newApkName = sprintf("%s_v%s_%s_%s.apk", [project, version, flavor, buildType])
-
-            output.outputFileName = new File(newApkName)
+        variant.outputs.all { output ->
+            def project = "slideOSSystem"
+            def separator = "_"
+            def buildType = variant.buildType.name
+            def versionName = variant.versionName
+            def versionCode = variant.versionCode
+            def flavor = variant.flavorName
+            def apkName = project + separator + "v" + versionName + separator + flavor + separator + buildType + ".apk"
+            output.outputFileName = apkName
         }
     }
 
@@ -63,11 +62,13 @@ android {
     flavorDimensions "default"
 
     productFlavors {
-        playstore {
-            applicationId "org.liskovsoft.androidtv.rukeyboard"
-        }
         origin {
-            applicationId "com.liskovsoft.leankeyboard"
+            applicationId "com.slideos.system"
+            versionName "0.8.1"
+        }
+        playstore {
+            applicationId "com.slideos.system"
+            versionName "6.1.32"
         }
     }
 }

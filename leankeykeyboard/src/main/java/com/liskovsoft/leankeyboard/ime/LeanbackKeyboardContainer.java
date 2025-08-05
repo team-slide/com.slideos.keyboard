@@ -39,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import com.liskovsoft.leankeyboard.addons.keyboards.KeyboardManager.KeyboardData;
 import com.liskovsoft.leankeyboard.addons.theme.ThemeManager;
@@ -54,7 +55,7 @@ import com.liskovsoft.leankeyboard.addons.keyboards.KeyboardManager;
 import com.liskovsoft.leankeyboard.helpers.Helpers;
 import com.liskovsoft.leankeyboard.helpers.MessageHelpers;
 import com.liskovsoft.leankeyboard.utils.LeanKeyPreferences;
-import com.liskovsoft.leankeykeyboard.R;
+import com.slideos.system.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,6 +141,8 @@ public class LeanbackKeyboardContainer {
     private Float mX;
     private Float mY;
     private String mLabel;
+    private TextView mInputTextDisplay;
+    private StringBuilder mCurrentInputText = new StringBuilder();
 
     private AnimatorListener mVoiceEnterListener = new AnimatorListener() {
         @Override
@@ -237,6 +240,28 @@ public class LeanbackKeyboardContainer {
         });
         mKeyboardManager = new KeyboardManager(mContext);
         initKeyboards();
+        
+        // Initialize input text display
+        mInputTextDisplay = new TextView(mContext);
+        mInputTextDisplay.setBackground(ContextCompat.getDrawable(mContext, R.drawable.input_text_pill_background));
+        mInputTextDisplay.setTextColor(android.graphics.Color.WHITE);
+        mInputTextDisplay.setTextSize(16);
+        mInputTextDisplay.setPadding(20, 10, 20, 10);
+        mInputTextDisplay.setGravity(android.view.Gravity.CENTER);
+        mInputTextDisplay.setText("");
+        
+        // Add input text display to the left of the keyboard
+        RelativeLayout.LayoutParams inputParams = new RelativeLayout.LayoutParams(
+            RelativeLayout.LayoutParams.WRAP_CONTENT,
+            RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+        inputParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        inputParams.addRule(RelativeLayout.CENTER_VERTICAL);
+        inputParams.setMargins(20, 0, 0, 0);
+        mRootView.addView(mInputTextDisplay, inputParams);
+        
+        // Initialize tip view (will be added when tips are active)
+        // The tip view will be positioned below the keyboard when needed
     }
 
     private void configureFocus(KeyFocus focus, Rect rect, int index, int type) {
@@ -1027,7 +1052,57 @@ public class LeanbackKeyboardContainer {
         if (dismissMiniKeyboard()) {
             moveFocusToIndex(mMiniKbKeyIndex, KeyFocus.TYPE_MAIN);
         }
-
+        
+        // Update input text display
+        updateInputTextDisplay();
+    }
+    
+    private void updateInputTextDisplay() {
+        if (mInputTextDisplay != null) {
+            String displayText = mCurrentInputText.toString();
+            if (displayText.isEmpty()) {
+                mInputTextDisplay.setText("");
+                mInputTextDisplay.setVisibility(View.INVISIBLE);
+            } else {
+                mInputTextDisplay.setText(displayText);
+                mInputTextDisplay.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+    
+    public void addToInputText(String text) {
+        mCurrentInputText.append(text);
+        updateInputTextDisplay();
+    }
+    
+    public void clearInputText() {
+        mCurrentInputText.setLength(0);
+        updateInputTextDisplay();
+    }
+    
+    public void deleteFromInputText() {
+        if (mCurrentInputText.length() > 0) {
+            mCurrentInputText.deleteCharAt(mCurrentInputText.length() - 1);
+            updateInputTextDisplay();
+        }
+    }
+    
+    public void addTipView(View tipView) {
+        if (tipView != null && tipView.getParent() == null) {
+            RelativeLayout.LayoutParams tipParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            tipParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            tipParams.setMargins(20, 0, 20, 20);
+            mRootView.addView(tipView, tipParams);
+        }
+    }
+    
+    public void removeTipView(View tipView) {
+        if (tipView != null && tipView.getParent() == mRootView) {
+            mRootView.removeView(tipView);
+        }
     }
 
     public void onVoiceClick() {

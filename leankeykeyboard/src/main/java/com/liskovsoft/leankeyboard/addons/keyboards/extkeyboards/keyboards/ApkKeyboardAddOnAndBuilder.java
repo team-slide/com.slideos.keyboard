@@ -23,7 +23,7 @@ import androidx.annotation.Nullable;
 import com.liskovsoft.leankeyboard.addons.keyboards.KeyboardBuilder;
 import com.liskovsoft.leankeyboard.addons.keyboards.extkeyboards.addons.AddOn;
 import com.liskovsoft.leankeyboard.addons.keyboards.extkeyboards.addons.AddOnImpl;
-import com.liskovsoft.leankeykeyboard.R;
+import com.slideos.system.R;
 
 public class ApkKeyboardAddOnAndBuilder extends AddOnImpl implements KeyboardBuilder {
 

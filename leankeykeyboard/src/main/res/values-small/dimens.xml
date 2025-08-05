@@ -9,16 +9,16 @@
     <dimen name="keyboard_horizontal_gap">8.0dip</dimen>
     <dimen name="keyboard_vertical_gap">6.0dip</dimen>
     
-    <!-- Font sizes - smaller for readability on small screen -->
-    <dimen name="key_font_size">14.0sp</dimen>
-    <dimen name="function_key_mode_change_font_size">12.0sp</dimen>
+    <!-- Font sizes - reduced by 30-40% for better fit -->
+    <dimen name="key_font_size">10.0sp</dimen>
+    <dimen name="function_key_mode_change_font_size">9.0sp</dimen>
     
     <!-- Settings interface dimensions -->
     <dimen name="settings_padding">8.0dip</dimen>
     <dimen name="settings_margin">4.0dip</dimen>
     <dimen name="settings_item_height">32.0dip</dimen>
-    <dimen name="settings_font_size">14.0sp</dimen>
-    <dimen name="settings_title_font_size">16.0sp</dimen>
+    <dimen name="settings_font_size">10.0sp</dimen>
+    <dimen name="settings_title_font_size">11.0sp</dimen>
     
     <!-- Dialog dimensions -->
     <dimen name="dialog_padding">12.0dip</dimen>
@@ -29,12 +29,12 @@
     <!-- List item dimensions -->
     <dimen name="list_item_height">40.0dip</dimen>
     <dimen name="list_item_padding">8.0dip</dimen>
-    <dimen name="list_item_font_size">14.0sp</dimen>
+    <dimen name="list_item_font_size">10.0sp</dimen>
     
     <!-- Button dimensions -->
     <dimen name="button_height">36.0dip</dimen>
     <dimen name="button_padding">12.0dip</dimen>
-    <dimen name="button_font_size">14.0sp</dimen>
+    <dimen name="button_font_size">10.0sp</dimen>
     
     <!-- Icon dimensions -->
     <dimen name="icon_size">20.0dip</dimen>

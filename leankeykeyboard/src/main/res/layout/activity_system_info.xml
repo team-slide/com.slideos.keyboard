@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/black">
+
+    <!-- Unified Status Bar -->
+    <include
+        android:id="@+id/unified_status_bar"
+        layout="@layout/unified_status_bar" />
+
+    <!-- Logo Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/system_info_logo"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:src="@drawable/about_logo"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp" />
+
+    </LinearLayout>
+
+    <!-- System Information List -->
+    <ListView
+        android:id="@+id/system_info_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@color/subtle_divider"
+        android:dividerHeight="1dp"
+        android:padding="0dp"
+        android:scrollbars="none" />
+
+</LinearLayout> 

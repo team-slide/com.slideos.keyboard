@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/black">
+
+    <!-- Unified Status Bar -->
+    <include
+        android:id="@+id/unified_status_bar"
+        layout="@layout/unified_status_bar" />
+
+    <!-- Wi-Fi Networks List -->
+    <ListView
+        android:id="@+id/wifi_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@color/subtle_divider"
+        android:dividerHeight="1dp"
+        android:padding="0dp"
+        android:scrollbars="none" />
+
+</LinearLayout> 

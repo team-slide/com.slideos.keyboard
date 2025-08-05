@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.GuidanceStylist.Guidance;
 import com.liskovsoft.leankeyboard.utils.LeanKeyPreferences;
-import com.liskovsoft.leankeykeyboard.R;
+import com.slideos.system.R;
 
 public class KbThemeFragment extends BaseSettingsFragment {
     private Context mContext;

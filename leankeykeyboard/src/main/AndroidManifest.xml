@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.liskovsoft.leankeykeyboard">
+          package="com.slideos.system">
 
     <!-- Use older sdk -->
     <uses-sdk tools:overrideLibrary="
@@ -20,37 +20,98 @@
         android:required="false"/>
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
     <uses-permission android:name="com.amazon.tv.ime.permission.KEYBOARD_STATE"/>
     <!-- Google Play Store fix -->
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!-- Status bar permissions -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <!-- Background keyboard service permissions -->
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
+
 
     <application
         android:banner="@mipmap/ic_banner_main"
         android:icon="@mipmap/ic_launcher_main"
-        android:label="@string/ime_name"
-        android:theme="@style/Theme.Leanback">
+        android:label="@string/app_name"
+        android:theme="@style/Theme.slideOS">
 
         <meta-data
             android:name="tv.reference_plus_preload_category"
             android:value="oem_1p_app" />
 
         <activity
-            android:name="com.liskovsoft.leankeyboard.activity.settings.KbSettingsActivity2"
+            android:name="com.liskovsoft.leankeyboard.activity.settings.SlideOSSettingsActivity"
             android:launchMode="singleTop"
-            android:exported="true">
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.slideOS">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-                <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.liskovsoft.leankeyboard.activity.settings.CreditsActivity"
+            android:launchMode="singleTop"
+            android:exported="false"
+            android:theme="@style/Theme.slideOS" />
+        
+        <activity
+            android:name="com.liskovsoft.leankeyboard.activity.settings.AppearanceSettingsActivity"
+            android:launchMode="singleTop"
+            android:exported="false"
+            android:theme="@style/Theme.slideOS" />
+        
+        <activity
+            android:name="com.liskovsoft.leankeyboard.activity.settings.CustomColorActivity"
+            android:launchMode="singleTop"
+            android:exported="false"
+            android:theme="@style/Theme.slideOS" />
+        <activity
+            android:name="com.liskovsoft.leankeyboard.activity.settings.KeyboardSettingsActivity"
+            android:launchMode="singleTop"
+            android:exported="false"
+            android:theme="@style/Theme.slideOS" />
+        <activity
+            android:name="com.liskovsoft.leankeyboard.activity.settings.WifiManagerActivity"
+            android:launchMode="singleTop"
+            android:exported="false"
+            android:theme="@style/Theme.slideOS" />
+        <activity
+            android:name="com.liskovsoft.leankeyboard.activity.settings.SystemInfoActivity"
+            android:launchMode="singleTop"
+            android:exported="false"
+            android:theme="@style/Theme.slideOS" />
+        <activity
+            android:name="com.liskovsoft.leankeyboard.activity.settings.StorageActivity"
+            android:launchMode="singleTop"
+            android:exported="false"
+            android:theme="@style/Theme.slideOS" />
+        <activity
+            android:name="com.liskovsoft.leankeyboard.activity.settings.CreditsDetailActivity"
+            android:launchMode="singleTop"
+            android:exported="false"
+            android:theme="@style/Theme.slideOS" />
+        <activity
+            android:name="com.liskovsoft.leankeyboard.activity.settings.StorageConfirmationActivity"
+            android:launchMode="singleTop"
+            android:exported="false"
+            android:theme="@style/Theme.slideOS" />
         <activity
             android:name="com.liskovsoft.leankeyboard.activity.settings.KbSettingsActivity"
             android:launchMode="singleTop">
@@ -110,12 +171,34 @@
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.liskovsoft.leankeyboard.START_BACKGROUND_SERVICE"/>
-                <action android:name="com.liskovsoft.leankeyboard.SHOW_KEYBOARD"/>
-                <action android:name="com.liskovsoft.leankeyboard.HIDE_KEYBOARD"/>
-                <action android:name="com.liskovsoft.leankeyboard.KEYBOARD_STATE_CHANGED"/>
+                <action android:name="com.slideos.system.START_BACKGROUND_SERVICE"/>
+                <action android:name="com.slideos.system.SHOW_KEYBOARD"/>
+                <action android:name="com.slideos.system.HIDE_KEYBOARD"/>
+                <action android:name="com.slideos.system.KEYBOARD_STATE_CHANGED"/>
             </intent-filter>
         </service>
+
+        <service
+            android:name="com.liskovsoft.leankeyboard.service.KeyboardMonitorService"
+            android:label="Keyboard Monitor Service"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.slideos.system.START_MONITORING"/>
+                <action android:name="com.slideos.system.STOP_MONITORING"/>
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name="com.liskovsoft.leankeyboard.receiver.BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
 
         <receiver
             android:name="com.liskovsoft.leankeyboard.receiver.RestartServiceReceiver"
@@ -141,6 +224,20 @@
                 <action android:name="com.amazon.tv.ime.action.KEYBOARD_STATE"/>
             </intent-filter>
         </receiver>
+
+        <!-- System Status Bar Accessibility Service -->
+        <service
+            android:name="com.liskovsoft.leankeyboard.service.SystemStatusBarService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
     </application>
 
 </manifest>

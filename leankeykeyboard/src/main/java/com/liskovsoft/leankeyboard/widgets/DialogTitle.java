@@ -13,7 +13,7 @@ import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import androidx.appcompat.widget.AppCompatTextView;
-import com.liskovsoft.leankeykeyboard.R;
+import com.slideos.system.R;
 
 /**
  * Used by dialogs to change the font size and number of lines to try to fit

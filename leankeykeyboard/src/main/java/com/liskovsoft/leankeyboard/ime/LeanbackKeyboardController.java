@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import com.liskovsoft.leankeyboard.ime.LeanbackKeyboardContainer.KeyFocus;
 import com.liskovsoft.leankeyboard.ime.pano.util.TouchNavSpaceTracker;
-import com.liskovsoft.leankeykeyboard.R;
+import com.slideos.system.R;
 
 import java.util.ArrayList;
 import android.content.Intent;
@@ -606,10 +606,14 @@ public class LeanbackKeyboardController implements LeanbackKeyboardContainer.Voi
                 case LeanbackKeyboardContainer.DIRECTION_UP:
                     // DPAD_UP should scroll left (like iPod Classic)
                     keyboardView.scrollLeft();
+                    // Update focus highlighting after scroll
+                    updateFocusAfterScroll();
                     return true;
                 case LeanbackKeyboardContainer.DIRECTION_DOWN:
                     // DPAD_DOWN should scroll right (like iPod Classic)
                     keyboardView.scrollRight();
+                    // Update focus highlighting after scroll
+                    updateFocusAfterScroll();
                     return true;
             }
         }
@@ -623,6 +627,19 @@ public class LeanbackKeyboardController implements LeanbackKeyboardContainer.Voi
         }
 
         return true;
+    }
+    
+    private void updateFocusAfterScroll() {
+        // Force refresh of focus highlighting after scroll operations
+        if (mContainer != null && mContainer.getMainKeyboardView() != null) {
+            LeanbackKeyboardView keyboardView = mContainer.getMainKeyboardView();
+            LeanbackKeyboardContainer.KeyFocus currentFocus = mContainer.getCurrFocus();
+            
+            // Update the focus to ensure highlighting is correct
+            if (currentFocus != null && currentFocus.type == LeanbackKeyboardContainer.KeyFocus.TYPE_MAIN) {
+                keyboardView.setFocus(currentFocus.index, false, true);
+            }
+        }
     }
 
     private void performBestSnap(long time) {
@@ -819,7 +836,7 @@ public class LeanbackKeyboardController implements LeanbackKeyboardContainer.Voi
 
     private void notifyKeyboardStateChanged(boolean isActive) {
         if (mContext != null) {
-            Intent intent = new Intent("com.liskovsoft.leankeyboard.KEYBOARD_STATE_CHANGED");
+            Intent intent = new Intent("com.slideos.system.KEYBOARD_STATE_CHANGED");
             intent.putExtra("isActive", isActive);
             mContext.sendBroadcast(intent);
         }

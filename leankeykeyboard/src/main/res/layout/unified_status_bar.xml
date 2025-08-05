@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="28dp"
+    android:orientation="horizontal"
+    android:background="#80000000"
+    android:padding="4dp"
+    android:gravity="center_vertical">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/unified_status_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="slideOS System"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:gravity="start"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true" />
+
+    <!-- Status Icons -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Wi-Fi Status -->
+        <ImageView
+            android:id="@+id/unified_wifi_status"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@drawable/ic_wifi_on"
+            android:layout_marginEnd="6dp" />
+
+        <!-- Bluetooth Status -->
+        <ImageView
+            android:id="@+id/unified_bluetooth_status"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@drawable/ic_bluetooth_on"
+            android:layout_marginEnd="6dp" />
+
+        <!-- Battery Status -->
+        <TextView
+            android:id="@+id/unified_battery_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔋"
+            android:textSize="10sp"
+            android:layout_marginEnd="6dp" />
+
+        <!-- Time -->
+        <TextView
+            android:id="@+id/unified_time_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12:34"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</LinearLayout> 

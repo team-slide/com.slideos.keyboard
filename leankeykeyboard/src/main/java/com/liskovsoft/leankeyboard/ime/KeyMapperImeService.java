@@ -9,7 +9,7 @@ import android.os.Build;
 import android.os.Build.VERSION;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputConnection;
-import com.liskovsoft.leankeykeyboard.BuildConfig;
+import com.slideos.system.BuildConfig;
 
 public class KeyMapperImeService extends InputMethodService {
     private static final String KEY_MAPPER_INPUT_METHOD_ACTION_INPUT_DOWN_UP = BuildConfig.APPLICATION_ID + ".inputmethod.ACTION_INPUT_DOWN_UP";

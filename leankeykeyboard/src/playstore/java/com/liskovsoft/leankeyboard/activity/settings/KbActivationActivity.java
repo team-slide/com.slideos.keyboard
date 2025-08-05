@@ -11,7 +11,7 @@ import android.os.Bundle;
 import com.liskovsoft.leankeyboard.helpers.Helpers;
 import com.liskovsoft.leankeyboard.helpers.MessageHelpers;
 import com.liskovsoft.leankeyboard.ime.LeanbackImeService;
-import com.liskovsoft.leankeykeyboard.R;
+import com.slideos.system.R;
 
 import java.util.ArrayList;
 import java.util.List;

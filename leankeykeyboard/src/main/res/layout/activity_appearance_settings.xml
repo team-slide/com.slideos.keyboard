@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Unified Status Bar -->
+    <include layout="@layout/unified_status_bar" />
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Theme Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="30dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Theme"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="15dp" />
+
+                <TextView
+                    android:id="@+id/theme_option"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dark"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:background="@drawable/theme_option_background"
+                    android:padding="15dp"
+                    android:gravity="center_vertical"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:tag="theme_option" />
+
+            </LinearLayout>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/subtle_divider"
+                android:layout_marginBottom="30dp" />
+
+            <!-- Accent Colors Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Accent Color"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="15dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose a color for UI highlights and selections"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:alpha="0.7"
+                    android:layout_marginBottom="30dp" />
+
+                <!-- Color Grid - Reorganized for better DPAD navigation -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+
+                    <!-- Row 1: Blue, Green, Orange, Purple -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="15dp">
+
+                        <FrameLayout
+                            android:id="@+id/color_blue"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginEnd="15dp"
+                            android:background="@drawable/color_circle_selector"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:tag="accent_blue">
+
+                            <View
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/circle_background"
+                                android:backgroundTint="@color/accent_blue" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/color_green"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginEnd="15dp"
+                            android:background="@drawable/color_circle_selector"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:tag="accent_green">
+
+                            <View
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/circle_background"
+                                android:backgroundTint="@color/accent_green" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/color_orange"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginEnd="15dp"
+                            android:background="@drawable/color_circle_selector"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:tag="accent_orange">
+
+                            <View
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/circle_background"
+                                android:backgroundTint="@color/accent_orange" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/color_purple"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:background="@drawable/color_circle_selector"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:tag="accent_purple">
+
+                            <View
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/circle_background"
+                                android:backgroundTint="@color/accent_purple" />
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                    <!-- Row 2: Red, Teal, Yellow, Pink -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="15dp">
+
+                        <FrameLayout
+                            android:id="@+id/color_red"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginEnd="15dp"
+                            android:background="@drawable/color_circle_selector"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:tag="accent_red">
+
+                            <View
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/circle_background"
+                                android:backgroundTint="@color/accent_red" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/color_teal"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginEnd="15dp"
+                            android:background="@drawable/color_circle_selector"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:tag="accent_teal">
+
+                            <View
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/circle_background"
+                                android:backgroundTint="@color/accent_teal" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/color_yellow"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginEnd="15dp"
+                            android:background="@drawable/color_circle_selector"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:tag="accent_yellow">
+
+                            <View
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/circle_background"
+                                android:backgroundTint="@color/accent_yellow" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/color_pink"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:background="@drawable/color_circle_selector"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:tag="accent_pink">
+
+                            <View
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/circle_background"
+                                android:backgroundTint="@color/accent_pink" />
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                    <!-- Row 3: Custom Color (centered) -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:id="@+id/color_custom"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:background="@drawable/color_circle_selector"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:tag="accent_custom">
+
+                            <View
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/circle_background"
+                                android:backgroundTint="@android:color/transparent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="+"
+                                android:textColor="@android:color/white"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout> 

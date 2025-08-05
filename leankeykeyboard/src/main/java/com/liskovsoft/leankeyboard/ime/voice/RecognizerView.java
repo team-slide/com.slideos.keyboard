@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.liskovsoft.leankeyboard.ime.LeanbackUtils;
-import com.liskovsoft.leankeykeyboard.R;
+import com.slideos.system.R;
 
 public class RecognizerView extends RelativeLayout {
     private static final boolean DEBUG = false;

@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import com.liskovsoft.leankeyboard.addons.keyboards.KeyboardInfo;
-import com.liskovsoft.leankeykeyboard.R;
+import com.slideos.system.R;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@android:color/black"
+    android:padding="8dp"
+    android:gravity="center_vertical">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/status_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="slideOS Settings"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="start" />
+
+    <!-- Status Icons -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Wi-Fi Status -->
+        <ImageView
+            android:id="@+id/wifi_status"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_wifi_on"
+            android:layout_marginEnd="8dp" />
+
+        <!-- Bluetooth Status -->
+        <ImageView
+            android:id="@+id/bluetooth_status"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_bluetooth_on"
+            android:layout_marginEnd="8dp" />
+
+        <!-- Battery Status -->
+        <TextView
+            android:id="@+id/battery_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔋"
+            android:textSize="14sp"
+            android:layout_marginEnd="8dp" />
+
+        <!-- Time -->
+        <TextView
+            android:id="@+id/time_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12:34"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</LinearLayout> 

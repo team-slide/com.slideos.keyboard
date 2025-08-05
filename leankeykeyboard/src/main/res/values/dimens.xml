@@ -21,7 +21,7 @@
     <dimen name="enter_key_padding_horizontal">16.0dip</dimen>
     <!-- Keyboard other -->
     <dimen name="keyboard_top_spacing">6.0dip</dimen>
-    <dimen name="keyboard_bottom_spacing">28.0dip</dimen>
+    <dimen name="keyboard_bottom_spacing">8.0dip</dimen>
     <!-- Voice input -->
     <dimen name="action_button_size">64.0dip</dimen>
     <dimen name="recognizer_size">96.0dip</dimen>

@@ -14,7 +14,7 @@ import com.liskovsoft.leankeyboard.addons.keyboards.KeyboardInfo;
 import com.liskovsoft.leankeyboard.ime.LeanbackKeyboardView;
 import com.liskovsoft.leankeyboard.utils.LeanKeyPreferences;
 import com.liskovsoft.leankeyboard.utils.TextDrawable;
-import com.liskovsoft.leankeykeyboard.R;
+import com.slideos.system.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,9 +81,9 @@ public class ResKeyboardFactory implements KeyboardFactory {
 
             @Override
             public Keyboard createAbcKeyboard() {
-                // Use letters keyboard for all languages
-                Keyboard keyboard = new Keyboard(mContext, R.xml.qwerty_letters);
-                Log.d(TAG, "Creating letters keyboard... " + info.getLangName());
+                // Use compact letters keyboard for better highlighting
+                Keyboard keyboard = new Keyboard(mContext, R.xml.qwerty_letters_compact);
+                Log.d(TAG, "Creating compact letters keyboard... " + info.getLangName());
                 return localizeKeys(keyboard, info);
             }
 

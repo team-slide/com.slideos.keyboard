@@ -19,6 +19,10 @@ import android.view.inputmethod.InputConnection;
 import androidx.core.text.BidiFormatter;
 import com.liskovsoft.leankeyboard.ime.LeanbackKeyboardController.InputListener;
 import com.liskovsoft.leankeyboard.utils.LeanKeyPreferences;
+import com.liskovsoft.leankeyboard.addons.theme.ThemeManager;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
 
 public class LeanbackImeService extends KeyMapperImeService {
     private static final String TAG = LeanbackImeService.class.getSimpleName();
@@ -37,6 +41,8 @@ public class LeanbackImeService extends KeyMapperImeService {
     private LeanbackSuggestionsFactory mSuggestionsFactory;
     public static final String COMMAND_RESTART = "restart";
     private boolean mForceShowKbd;
+    private KeyboardTipsManager mTipsManager;
+    private android.content.BroadcastReceiver mThemeReceiver;
 
     @SuppressLint("HandlerLeak")
     private final Handler mHandler = new Handler() {
@@ -62,12 +68,27 @@ public class LeanbackImeService extends KeyMapperImeService {
 
     @Override
     public void onCreate() {
-        //setupDensity();
-        super.onCreate();
+        try {
+            //setupDensity();
+            super.onCreate();
 
-        Log.d(TAG, "onCreate");
+            Log.d(TAG, "onCreate");
 
-        initSettings();
+            initSettings();
+            
+                    // Initialize tips manager with error handling
+        try {
+            mTipsManager = new KeyboardTipsManager(this);
+        } catch (Exception e) {
+            Log.e(TAG, "Error initializing tips manager", e);
+            mTipsManager = null;
+        }
+        
+        // Register theme change receiver
+        registerThemeReceiver();
+        } catch (Exception e) {
+            Log.e(TAG, "Error in onCreate", e);
+        }
     }
 
     private void setupDensity() {
@@ -81,11 +102,17 @@ public class LeanbackImeService extends KeyMapperImeService {
     }
 
     private void initSettings() {
-        LeanKeyPreferences prefs = LeanKeyPreferences.instance(this);
-        mForceShowKbd = prefs.getForceShowKeyboard();
+        try {
+            LeanKeyPreferences prefs = LeanKeyPreferences.instance(this);
+            mForceShowKbd = prefs.getForceShowKeyboard();
 
-        if (mKeyboardController != null) {
-            mKeyboardController.setSuggestionsEnabled(prefs.getSuggestionsEnabled());
+            if (mKeyboardController != null) {
+                mKeyboardController.setSuggestionsEnabled(prefs.getSuggestionsEnabled());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error initializing settings", e);
+            // Set defaults
+            mForceShowKbd = false;
         }
     }
 
@@ -265,14 +292,77 @@ public class LeanbackImeService extends KeyMapperImeService {
     @Override
     public boolean onEvaluateInputViewShown() {
         Log.d(TAG, "onEvaluateInputViewShown");
-        return mForceShowKbd || super.onEvaluateInputViewShown();
+        // Always show keyboard when force show is enabled, regardless of hardware input devices
+        if (mForceShowKbd) {
+            Log.d(TAG, "Force showing keyboard due to user preference");
+            return true;
+        }
+        
+        // Check if we have hardware input devices and ensure keyboard is still shown
+        if (hasHardwareInputDevices()) {
+            Log.d(TAG, "Hardware input devices detected - ensuring keyboard is shown");
+            return true;
+        }
+        
+        return super.onEvaluateInputViewShown();
+    }
+    
+    private boolean hasHardwareInputDevices() {
+        try {
+            // Check for hardware input devices using system properties
+            Process process = Runtime.getRuntime().exec("su -c 'getevent -p'");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Check for hardware keyboard keys
+                if (line.contains("KEY_A") || line.contains("KEY_B") || line.contains("KEY_C") || 
+                    line.contains("KEY_D") || line.contains("KEY_E") || line.contains("KEY_F") ||
+                    line.contains("KEY_G") || line.contains("KEY_H") || line.contains("KEY_I") ||
+                    line.contains("KEY_J") || line.contains("KEY_K") || line.contains("KEY_L") ||
+                    line.contains("KEY_M") || line.contains("KEY_N") || line.contains("KEY_O") ||
+                    line.contains("KEY_P") || line.contains("KEY_Q") || line.contains("KEY_R") ||
+                    line.contains("KEY_S") || line.contains("KEY_T") || line.contains("KEY_U") ||
+                    line.contains("KEY_V") || line.contains("KEY_W") || line.contains("KEY_X") ||
+                    line.contains("KEY_Y") || line.contains("KEY_Z")) {
+                    return true;
+                }
+                
+                // Check for D-pad
+                if (line.contains("KEY_DPAD_UP") || line.contains("KEY_DPAD_DOWN") || 
+                    line.contains("KEY_DPAD_LEFT") || line.contains("KEY_DPAD_RIGHT")) {
+                    return true;
+                }
+                
+                // Check for gamepad buttons
+                if (line.contains("KEY_BUTTON_A") || line.contains("KEY_BUTTON_B") || 
+                    line.contains("KEY_BUTTON_X") || line.contains("KEY_BUTTON_Y")) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error checking hardware input devices: " + e.getMessage());
+        }
+        return false;
     }
 
     // FireTV fix
     @Override
     public boolean onShowInputRequested(int flags, boolean configChange) {
         Log.d(TAG, "onShowInputRequested");
-        return mForceShowKbd || super.onShowInputRequested(flags, configChange);
+        // Always show keyboard when force show is enabled, regardless of hardware input devices
+        if (mForceShowKbd) {
+            Log.d(TAG, "Force showing keyboard due to user preference");
+            return true;
+        }
+        
+        // Check if we have hardware input devices and ensure keyboard is still shown
+        if (hasHardwareInputDevices()) {
+            Log.d(TAG, "Hardware input devices detected - ensuring keyboard is shown");
+            return true;
+        }
+        
+        return super.onShowInputRequested(flags, configChange);
     }
 
     @Override
@@ -318,6 +408,26 @@ public class LeanbackImeService extends KeyMapperImeService {
             return true;
         }
 
+        // Handle PLAY_PAUSE for keyboard mode switching
+        if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {
+            if (mKeyboardController != null) {
+                // Switch between letters, symbols, and numbers
+                // Use reflection to access the private container field
+                try {
+                    java.lang.reflect.Field containerField = mKeyboardController.getClass().getDeclaredField("mContainer");
+                    containerField.setAccessible(true);
+                    Object container = containerField.get(mKeyboardController);
+                    if (container != null) {
+                        java.lang.reflect.Method switchMethod = container.getClass().getMethod("switchToNextKeyboard");
+                        switchMethod.invoke(container);
+                        return true;
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "Error switching keyboard", e);
+                }
+            }
+        }
+        
         return isInputViewShown() && mKeyboardController.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
@@ -375,20 +485,33 @@ public class LeanbackImeService extends KeyMapperImeService {
     public void onStartInputView(EditorInfo info, boolean restarting) {
         super.onStartInputView(info, restarting);
 
-        mKeyboardController.onStartInputView();
-        sendBroadcast(new Intent(IME_OPEN));
-        if (mKeyboardController.areSuggestionsEnabled()) {
-            mSuggestionsFactory.createSuggestions();
-            mKeyboardController.updateSuggestions(mSuggestionsFactory.getSuggestions());
+        try {
+            mKeyboardController.onStartInputView();
+            sendBroadcast(new Intent(IME_OPEN));
+            if (mKeyboardController.areSuggestionsEnabled()) {
+                mSuggestionsFactory.createSuggestions();
+                mKeyboardController.updateSuggestions(mSuggestionsFactory.getSuggestions());
 
-            // NOTE: FileManager+ rename item fix: https://t.me/LeanKeyboard/931
-            // NOTE: Code below deletes text that has selection.
-            //InputConnection connection = getCurrentInputConnection();
-            //if (connection != null) {
-            //    String text = LeanbackUtils.getEditorText(connection);
-            //    connection.deleteSurroundingText(LeanbackUtils.getCharLengthBeforeCursor(connection), LeanbackUtils.getCharLengthAfterCursor(connection));
-            //    connection.commitText(text, 1);
-            //}
+                // NOTE: FileManager+ rename item fix: https://t.me/LeanKeyboard/931
+                // NOTE: Code below deletes text that has selection.
+                //InputConnection connection = getCurrentInputConnection();
+                //if (connection != null) {
+                //    String text = LeanbackUtils.getEditorText(connection);
+                //    connection.deleteSurroundingText(LeanbackUtils.getCharLengthBeforeCursor(connection), LeanbackUtils.getCharLengthAfterCursor(connection));
+                //    connection.commitText(text, 1);
+                //}
+            }
+            
+            // Check and start tips if needed - wrap in try-catch to prevent crashes
+            if (mTipsManager != null) {
+                try {
+                    mTipsManager.checkAndStartTips();
+                } catch (Exception e) {
+                    Log.e(TAG, "Error starting tips", e);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error in onStartInputView", e);
         }
     }
 
@@ -397,6 +520,45 @@ public class LeanbackImeService extends KeyMapperImeService {
 
         if (mKeyboardController != null) {
             mKeyboardController.initKeyboards();
+        }
+    }
+    
+    private void registerThemeReceiver() {
+        mThemeReceiver = new android.content.BroadcastReceiver() {
+            @Override
+            public void onReceive(android.content.Context context, android.content.Intent intent) {
+                if ("com.slideos.system.THEME_CHANGED".equals(intent.getAction())) {
+                    String themeMode = intent.getStringExtra("theme_mode");
+                    Log.d(TAG, "Theme changed to: " + themeMode + ", updating keyboard theme");
+                    
+                    // Update keyboard theme
+                    if (mKeyboardController != null) {
+                        try {
+                            ThemeManager.getInstance(LeanbackImeService.this).updateKeyboardTheme();
+                            ThemeManager.getInstance(LeanbackImeService.this).updateSuggestionsTheme();
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error updating keyboard theme", e);
+                        }
+                    }
+                }
+            }
+        };
+        
+        android.content.IntentFilter filter = new android.content.IntentFilter("com.slideos.system.THEME_CHANGED");
+        registerReceiver(mThemeReceiver, filter);
+    }
+    
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        
+        // Unregister theme receiver
+        if (mThemeReceiver != null) {
+            try {
+                unregisterReceiver(mThemeReceiver);
+            } catch (Exception e) {
+                Log.w(TAG, "Error unregistering theme receiver", e);
+            }
         }
     }
 }

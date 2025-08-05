@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/black"
+    android:padding="20dp">
+
+    <!-- Unified Status Bar -->
+    <include layout="@layout/unified_status_bar" />
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Custom Color"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp" />
+
+    <!-- Color Preview -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginBottom="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preview"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:layout_marginBottom="15dp" />
+
+        <View
+            android:id="@+id/color_preview"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/circle_background"
+            android:backgroundTint="@color/ipod_classic_blue" />
+
+    </LinearLayout>
+
+    <!-- Hex Color Input -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hex Color"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:layout_marginBottom="10dp" />
+
+        <EditText
+            android:id="@+id/hex_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="#007AFF"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/darker_gray"
+            android:background="@android:color/transparent"
+            android:padding="15dp"
+            android:textSize="16sp"
+            android:inputType="textCapCharacters"
+            android:maxLength="7" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/subtle_divider"
+            android:layout_marginTop="5dp" />
+
+    </LinearLayout>
+
+    <!-- RGB Inputs -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RGB Values"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:layout_marginBottom="15dp" />
+
+        <!-- Red -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:text="Red:"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <SeekBar
+                android:id="@+id/red_seekbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="255"
+                android:progress="0"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp" />
+
+            <EditText
+                android:id="@+id/red_input"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@android:color/white"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <!-- Green -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:text="Green:"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <SeekBar
+                android:id="@+id/green_seekbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="255"
+                android:progress="122"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp" />
+
+            <EditText
+                android:id="@+id/green_input"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:text="122"
+                android:textColor="@android:color/white"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <!-- Blue -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:text="Blue:"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <SeekBar
+                android:id="@+id/blue_seekbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="255"
+                android:progress="255"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp" />
+
+            <EditText
+                android:id="@+id/blue_input"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:text="255"
+                android:textColor="@android:color/white"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textColor="@android:color/white"
+            android:background="@android:color/transparent"
+            android:padding="15dp"
+            android:layout_marginEnd="20dp" />
+
+        <Button
+            android:id="@+id/apply_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apply"
+            android:textColor="@android:color/white"
+            android:background="@android:color/transparent"
+            android:padding="15dp"
+            android:layout_marginStart="20dp" />
+
+    </LinearLayout>
+
+</LinearLayout> 
